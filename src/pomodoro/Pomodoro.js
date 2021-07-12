@@ -3,6 +3,8 @@ import useInterval from "../utils/useInterval";
 import Buttons from "./Buttons";
 import Controls from "./Controls";
 import { secondsToDuration, minutesToDuration } from "../utils/duration";
+import ClassNames from "../utils/class-names";
+import classNames from "../utils/class-names";
 // These functions are defined outside of the component to insure they do not have access to state
 // and are, therefore more likely to be pure.
 /**
@@ -123,7 +125,13 @@ function Pomodoro() {
         focusDuration={focusDuration}
       />
       <div>
-        <Controls />
+        <Controls
+          isTimerRunning={isTimerRunning}
+          playPause={playPause}
+          session={session}
+          handleStopClick={handleStopClick}
+          classNames={classNames}
+        />
       </div>
       <div>
         {/* TODO: This area should show only when there is an active focus or break - i.e. the session is running or is paused */}

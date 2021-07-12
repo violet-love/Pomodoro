@@ -1,8 +1,15 @@
 import React from "react";
 
-function Controls({ isTimerRunning, playPause, classNames, session, handleStopClick}){
-    return (
-      <div>
+function Controls({
+  isTimerRunning,
+  playPause,
+  classNames,
+  session,
+  handleStopClick,
+}) {
+  return (
+    <> 
+      <div className="row">
         <div className="col">
           <div
             className="btn-group btn-group-lg mb-2"
@@ -14,15 +21,15 @@ function Controls({ isTimerRunning, playPause, classNames, session, handleStopCl
               className="btn btn-primary"
               data-testid="play-pause"
               title="Start or pause timer"
-              onClick={playPause}
-            >
-              <span
-                className={classNames({
-                  oi: true,
-                  "oi-media-play": !isTimerRunning,
-                  "oi-media-pause": isTimerRunning,
-                })}
-              />
+              onClick={playPause}>
+            
+            <span
+              className={classNames({
+                oi: true,
+                "oi-media-play": !isTimerRunning,
+                "oi-media-pause": isTimerRunning,
+              })}
+            />
             </button>
             {/* TODO: Implement stopping the current focus or break session. and disable the stop button when there is no active session */}
             {/* TODO: Disable the stop button when there is no active session */}
@@ -39,6 +46,7 @@ function Controls({ isTimerRunning, playPause, classNames, session, handleStopCl
           </div>
         </div>
       </div>
-    );
+    </>
+  );
 }
 export default Controls;
