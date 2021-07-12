@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import classNames from "../utils/class-names";
 import useInterval from "../utils/useInterval";
 import Buttons from "./Buttons";
+import Controls from "./Controls";
 import { secondsToDuration, minutesToDuration } from "../utils/duration";
-
 // These functions are defined outside of the component to insure they do not have access to state
-// and are, therefore more likely to be pure.​
+// and are, therefore more likely to be pure.
 /**
  * Update the session state with new state after each tick of the interval.
  * @param prevState
@@ -51,7 +50,6 @@ function Pomodoro() {
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   // The current session - null where there is no session running
   const [session, setSession] = useState(null);
-
   // ToDo: Allow the user to adjust the focus and break duration.
   const [focusDuration, setFocusDuration] = useState(25);
   const [breakDuration, setBreakDuration] = useState(5);
@@ -64,15 +62,13 @@ function Pomodoro() {
     () => {
       if (session.timeRemaining === 0) {
         new Audio("https://bigsoundbank.com/UPLOAD/mp3/1482.mp3").play();
-        return setSession(nextSession(focusDuration));
+        return setSession(nextSession(focusDuration, breakDuration));
       }
       return setSession(nextTick);
     },
-    isTimerRunning ? 1000 : null
+    isTimerRunning ? 100 : null
   );
-
   // useInterval(callback, interval)
-
   /**
    * Called whenever the play/pause button is clicked.
    */
@@ -95,29 +91,24 @@ function Pomodoro() {
       return nextState;
     });
   }
-
   const handleFocusMinus = () => {
     setFocusDuration(Math.max(5, focusDuration - 5));
   };
-
   const handleFocusPlus = () => {
     setFocusDuration(Math.min(60, focusDuration + 5));
   };
-
   const handleBreakMinus = () => {
     setBreakDuration(Math.max(1, breakDuration - 1));
   };
   const handleBreakPlus = () => {
     setBreakDuration(Math.min(15, breakDuration + 1));
   };
-
   const handleStopClick = () => {
     setFocusDuration(25);
     setBreakDuration(15);
     setSession(null);
     setIsTimerRunning();
   };
-
   console.log(session);
   return (
     <div className="pomodoro">
@@ -131,47 +122,13 @@ function Pomodoro() {
         breakDuration={breakDuration}
         focusDuration={focusDuration}
       />
-      <div className="row">
-        <div className="col">
-          <div
-            className="btn-group btn-group-lg mb-2"
-            role="group"
-            aria-label="Timer controls"
-          >
-            <button
-              type="button"
-              className="btn btn-primary"
-              data-testid="play-pause"
-              title="Start or pause timer"
-              onClick={playPause}
-            >
-              <span
-                className={classNames({
-                  oi: true,
-                  "oi-media-play": !isTimerRunning,
-                  "oi-media-pause": isTimerRunning,
-                })}
-              />
-            </button>
-            {/* TODO: Implement stopping the current focus or break session. and disable the stop button when there is no active session */}
-            {/* TODO: Disable the stop button when there is no active session */}
-            <button
-              type="button"
-              className="btn btn-secondary"
-              data-testid="stop"
-              title="Stop the session"
-              onClick={handleStopClick}
-              disabled={!session}
-            >
-              <span className="oi oi-media-stop" />
-            </button>
-          </div>
-        </div>
+      <div>
+        <Controls />
       </div>
       <div>
         {/* TODO: This area should show only when there is an active focus or break - i.e. the session is running or is paused */}
         {session && (
-          <div className="row mb-2">
+          <div>
             <div className="col">
               <h2 data-testid="session-title">
                 {session.label} for{" "}
@@ -220,5 +177,4 @@ function Pomodoro() {
     </div>
   );
 }
-
 export default Pomodoro;
